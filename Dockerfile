@@ -12,11 +12,18 @@ RUN a2enmod rewrite
 RUN service apache2 restart
 
 RUN apt-get update && \ 
-    apt-get -y install git
+    apt-get -y install git libzip-dev
+
+RUN docker-php-ext-install pdo_mysql && \
+    docker-php-ext-install zip && \
+    docker-php-ext-install mysqli
 
 RUN apt-get install -y unzip && \
     docker-php-ext-enable sodium && \
-    docker-php-ext-enable opcache
+    docker-php-ext-enable opcache && \
+    docker-php-ext-enable pdo_mysql && \
+    docker-php-ext-enable zip && \
+    docker-php-ext-enable mysqli
 
 RUN groupadd -g 1000 www
 RUN useradd -u 1000 -ms /bin/bash -g www-data www
