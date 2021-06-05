@@ -12,7 +12,20 @@ RUN a2enmod rewrite
 RUN service apache2 restart
 
 RUN apt-get update && \ 
-    apt-get -y install git libzip-dev
+    apt-get -y install \
+    git \ 
+    libzip-dev \
+    libpq-dev \
+    libfreetype6-dev \
+    libjpeg62-turbo-dev \
+    libpng-dev
+
+RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
+    docker-php-ext-install -j$(nproc) gd
+
+RUN pecl install -o -f redis \
+    &&  rm -rf /tmp/pear \
+    &&  docker-php-ext-enable redis
 
 RUN docker-php-ext-install pdo_mysql && \
     docker-php-ext-install zip && \
