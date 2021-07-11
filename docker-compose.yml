@@ -1,0 +1,46 @@
+version: "3.3"
+
+services: 
+
+    web:
+        container_name: web_phpfpm
+        build: 
+            context: .
+        volumes: 
+            - ./:/var/www
+            - ./.nginx/config:/etc/nginx/conf.d
+        ports: 
+            - "8080:80"
+        depends_on: 
+            - "db"
+            - "php"
+        networks: 
+            - app
+    php:
+        container_name: phpfpm
+        build: 
+            context: ./.phpfpm
+        ports: 
+            - "9000:9000"
+        volumes: 
+            - ./:/var/www
+        depends_on: 
+            - "db"
+        networks: 
+            - app
+
+    db:
+        container_name: phpfpm_db
+        image: mariadb:latest
+        ports: 
+            - "3306:3306"
+        environment: 
+            MYSQL_ARBITARY: 1
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: test
+        networks: 
+            - app
+
+networks: 
+    app:
+        driver: bridge
