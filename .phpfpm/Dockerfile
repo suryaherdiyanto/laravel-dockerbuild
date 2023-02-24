@@ -14,7 +14,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg && \
     docker-php-ext-install -j$(nproc) gd
 
 RUN mkdir -p /usr/src/php/ext/redis; \
-    curl -fsSL --ipv4 https://github.com/phpredis/phpredis/archive/5.3.2.tar.gz | tar xvz -C "/usr/src/php/ext/redis" --strip 1; \
+    curl -fsSL --ipv4 https://github.com/phpredis/phpredis/archive/refs/tags/5.3.7.zip | tar xvz -C "/usr/src/php/ext/redis" --strip 1; \
     docker-php-ext-install redis
 
 RUN docker-php-ext-install pdo_mysql && \
